@@ -1,1 +1,45 @@
+#include <stdio.h>
+#include <unistd.h> // для функции usleep()
+#define WIDTH 40
+#define HEIGHT 20 [1](https://otvet.mail.ru/question/238633707)
 
+void clearScreen() {
+    printf("\033[H\033[J");
+} [1](https://otvet.mail.ru/question/238633707)
+
+void drawBall(int x, int y) {
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            if (i == y && j == x) {
+                printf("O");
+            } else {
+                printf(" ");
+            }
+        }
+        printf("\n");
+    }
+} [1](https://otvet.mail.ru/question/238633707)
+
+int main() {
+    int ballX = WIDTH / 2;
+    int ballY = HEIGHT / 2;
+    int velocityX = 1;
+    int velocityY = 1;
+    while (1) {
+        clearScreen();
+        drawBall(ballX, ballY);
+        // Обновление позиции мяча
+        ballX += velocityX;
+        ballY += velocityY;
+        // Проверка столкновения с границами и изменение направления
+        if (ballX <= 0 || ballX >= WIDTH - 1) {
+            velocityX = -velocityX;
+        }
+        if (ballY <= 0 || ballY >= HEIGHT - 1) {
+            velocityY = -velocityY;
+        }
+        // Задержка для замедления движения мяча
+        usleep(100000); // 100000 микросекунд = 0.1 секунд
+    }
+    return 0;
+}
